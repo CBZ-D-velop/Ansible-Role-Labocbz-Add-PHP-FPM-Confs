@@ -1,1 +1,30 @@
 ---
+- name: "Import pools"
+  notify: "Restart php-fpm"
+  block:
+    - name: "Check if /var/run/php-fpm/{{ add_php_fpm_confs_php_version }} folder exist"
+      register: file_check
+      ansible.builtin.stat:
+        path: "/var/run/php-fpm/{{ add_php_fpm_confs_php_version }}"
+
+    - name: "Create /var/run/php-fpm/{{ add_php_fpm_confs_php_version }} dir"
+      when: not file_check.stat.exists
+      ansible.builtin.file:
+        path: "/var/run/php-fpm/{{ add_php_fpm_confs_php_version }}"
+        state: directory
+        recurse: yes
+        owner: "root"
+        group: "root"
+        mode: "0777"
+
+    - name: "Import all pools"
+      loop: "{{ add_php_fpm_confs_fpm_pools }}"
+      loop_control:
+        loop_var: pool
+      ansible.builtin.template:
+        src: "templates/pool.conf.j2"
+        dest: "{{ add_php_fpm_confs_php_pools_path }}/{{ pool.name }}.conf"
+        mode: "0600"
+        owner: "root"
+        group: "root"
+        lstrip_blocks: yes

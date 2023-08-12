@@ -12,5 +12,9 @@
     - name: "Include labocbz.add_php_fpm_confs"
       tags:
         - "labocbz.add_php_fpm_confs"
+      vars:
+        add_php_fpm_confs_php_version: "{{ inv_add_php_fpm_confs_php_version }}"
+        add_php_fpm_confs_php_pools_path: "{{ inv_add_php_fpm_confs_php_pools_path }}"
+        add_php_fpm_confs_fpm_pools: "{{ inv_add_php_fpm_confs_fpm_pools }}"
       ansible.builtin.include_role:
         name: "labocbz.add_php_fpm_confs"

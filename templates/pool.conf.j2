@@ -1,0 +1,24 @@
+;##############################
+;#                            #
+;# Ansible / Tower managed on #
+;#                            #
+;##############################
+
+[{{ pool.name }}]
+user = {{ pool.user }}
+group = {{ pool.group }}
+
+listen = /var/run/php-fpm/{{ add_php_fpm_confs_php_version }}/{{ pool.name }}.sock
+listen.owner = {{ pool.user }}
+listen.group = {{ pool.group }}
+listen.mode = {{ pool.mode }}
+
+pm = ondemand
+pm.process_idle_timeout = {{ pool.process_idle_timeout }};
+pm.max_children = {{ pool.max_children }}
+pm.max_requests = {{ pool.max_children }}
+pm.start_servers = {{ pool.mode }}
+pm.min_spare_servers = {{ pool.mode }}
+pm.max_spare_servers = {{ pool.mode }}
+
+chdir = /
