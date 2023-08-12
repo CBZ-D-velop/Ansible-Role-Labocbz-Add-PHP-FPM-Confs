@@ -1,1 +1,15 @@
 ---
+add_php_fpm_confs_php_version: "8.2"
+add_php_fpm_confs_php_pools_path: "/etc/php/{{ add_php_fpm_confs_php_version }}/fpm/pool.d"
+
+add_php_fpm_confs_fpm_pools:
+  - name: "www"
+    user: "www-data"
+    group: "www-data"
+    mode: "0600"
+    max_children: 40
+    start_servers: 8
+    min_spare_servers: 4
+    max_spare_servers: 4
+    process_idle_timeout: "10s"
+    max_requests: 500

@@ -5,3 +5,18 @@
   hosts: "all"
   gather_facts: false
   tasks:
+
+    - name: "Get PHP FPM service current state"
+      register: fpm_service_status
+      failed_when: not fpm_service_status.status.ActiveState == 'active'
+      ansible.builtin.systemd:
+        name: "php{{ inv_add_php_fpm_confs_php_version }}-fpm"
+
+    - name: "Ensure all pool socks are here"
+      register: pool_sock
+      failed_when: not pool_sock.stat.exists
+      loop: "{{ inv_add_php_fpm_confs_fpm_pools }}"
+      loop_control:
+        loop_var: pool  
+      ansible.builtin.stat:
+        path: /var/run/php-fpm/{{ inv_add_php_fpm_confs_php_version }}/{{ pool.name }}.sock
