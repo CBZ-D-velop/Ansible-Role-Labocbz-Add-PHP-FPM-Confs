@@ -2,6 +2,21 @@
 - name: "Import pools"
   notify: "Restart php-fpm"
   block:
+    - name: "Check if /var/run/php-fpm folder exist"
+      register: file_check
+      ansible.builtin.stat:
+        path: "/var/run/php-fpm"
+
+    - name: "Create /var/run/php-fpm dir"
+      when: not file_check.stat.exists
+      ansible.builtin.file:
+        path: "/var/run/php-fpm"
+        state: directory
+        recurse: yes
+        owner: "root"
+        group: "root"
+        mode: "0777"
+
     - name: "Check if /var/run/php-fpm/{{ add_php_fpm_confs_php_version }} folder exist"
       register: file_check
       ansible.builtin.stat:
