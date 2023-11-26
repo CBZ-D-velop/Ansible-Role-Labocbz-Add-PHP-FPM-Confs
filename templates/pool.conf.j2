@@ -8,7 +8,7 @@
 user = {{ pool.user }}
 group = {{ pool.group }}
 
-listen = /var/run/php-fpm/{{ add_php_fpm_confs_php_version }}/{{ pool.name }}.sock
+listen = /var/run/{{ pool.name }}-fpm.sock
 listen.owner = {{ pool.user }}
 listen.group = {{ pool.group }}
 listen.mode = {{ pool.mode }}
