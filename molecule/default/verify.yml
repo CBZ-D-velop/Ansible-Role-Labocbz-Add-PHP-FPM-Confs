@@ -19,4 +19,4 @@
       loop_control:
         loop_var: pool  
       ansible.builtin.stat:
-        path: /var/run/php-fpm/{{ inv_add_php_fpm_confs_php_version }}/{{ pool.name }}.sock
+        path: /var/run/{{ pool.name }}-fpm.sock
