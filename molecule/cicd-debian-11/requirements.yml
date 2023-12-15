@@ -13,4 +13,4 @@
 
 - name: "labocbz.install_php"
   src: "https://github.com/CBZ-D-velop/Ansible-Role-Labocbz-Install-PHP.git"
-  version: "1.0"
+  version: "2.0"
