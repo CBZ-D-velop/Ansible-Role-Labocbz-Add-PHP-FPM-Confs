@@ -21,4 +21,9 @@ pm.start_servers = {{ pool.mode }}
 pm.min_spare_servers = {{ pool.mode }}
 pm.max_spare_servers = {{ pool.mode }}
 
+php_admin_value[error_log] = {{ add_php_fpm_confs_php_pools_log_path }}/{{ pool.name }}/php-error.log
+access.log = {{ add_php_fpm_confs_php_pools_log_path }}/{{ pool.name }}/php-access.log
+access.format = "%R %u [%t] \"%m %r\" %s %d %l"
+slowlog = {{ add_php_fpm_confs_php_pools_log_path }}/{{ pool.name }}/php-slow.log
+
 chdir = /

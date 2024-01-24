@@ -21,6 +21,7 @@ inv_install_php_allow_url_fopen: "Off"
 inv_install_php_allow_url_include: "Off"
 inv_install_php_session_save_handler: "redis"
 inv_install_php_session_save_path: "tcp://{{ inventory_hostname }}:6379?auth=mySecret"
+inv_install_php_log_level: "WARNING"
 
 #inv_install_php_session_save_handler: "redis"
 #inv_install_php_session_save_path: "tls://{{ inventory_hostname }}:6379?auth=mySecret"
