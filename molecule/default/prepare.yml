@@ -126,5 +126,6 @@
         install_php_session_auto_start: "{{ inv_install_php_session_auto_start }}"
         install_php_session_use_strict_mode: "{{ inv_install_php_session_use_strict_mode }}"
         install_php_disable_functions: "{{ inv_install_php_disable_functions }}"
+        install_php_log_level: "{{ inv_install_php_log_level }}"
       ansible.builtin.include_role:
         name: "labocbz.install_php"
