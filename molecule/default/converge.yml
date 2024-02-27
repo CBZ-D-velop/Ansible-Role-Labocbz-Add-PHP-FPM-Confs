@@ -1,21 +1,15 @@
 ---
 - name: "Converge"
-  hosts: "all"
+  hosts: "local"
   tasks:
-    # replace these tasks with whatever you find suitable to test
-    - name: "Copy something to test use of synchronize module"
-      ansible.builtin.copy:
-        src: "/etc/hosts"
-        dest: "/tmp/hosts-from-controller"
-        mode: 0700
 
     - name: "Include labocbz.add_php_fpm_confs"
       tags:
         - "labocbz.add_php_fpm_confs"
       vars:
-        add_php_fpm_confs_php_version: "{{ inv_add_php_fpm_confs_php_version }}"
-        add_php_fpm_confs_php_pools_path: "{{ inv_add_php_fpm_confs_php_pools_path }}"
-        add_php_fpm_confs_fpm_pools: "{{ inv_add_php_fpm_confs_fpm_pools }}"
-        add_php_fpm_confs_php_pools_log_path: "{{ inv_add_php_fpm_confs_php_pools_log_path }}"
+        add_php_fpm_confs__php_version: "{{ inv_add_php_fpm_confs__php_version }}"
+        add_php_fpm_confs__php_pools_path: "{{ inv_add_php_fpm_confs__php_pools_path }}"
+        add_php_fpm_confs__fpm_pools: "{{ inv_add_php_fpm_confs__fpm_pools }}"
+        add_php_fpm_confs__php_pools_log_path: "{{ inv_add_php_fpm_confs__php_pools_log_path }}"
       ansible.builtin.include_role:
         name: "labocbz.add_php_fpm_confs"

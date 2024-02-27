@@ -1,7 +1,7 @@
 ---
 # if you have any prepararion task
 - name: "Prepare"
-  hosts: "all"
+  hosts: "local"
   gather_facts: true
   tasks:
 
@@ -17,115 +17,46 @@
     - name: "Gather facts from all hosts"
       delegate_to: "{{ item }}"
       delegate_facts: true
-      loop: "{{ groups['all'] }}"
+      loop: "{{ groups['local'] }}"
       ansible.builtin.setup:
 
     - name: "Edit /etc/hosts file to add all hosts"
-      loop: "{{ groups['all'] }}"
+      loop: "{{ groups['local'] }}"
       loop_control:
         loop_var: host
       register: output
       changed_when: output.rc != 0
       ansible.builtin.shell: "echo \"{{ hostvars[host]['ansible_default_ipv4']['address'] }}  {{ host }} # from Molecule\" >> /etc/hosts"
 
-    - name: "Import cryptographic content if needed (cert)"
-      loop: "{{ inv_cert_bundles }}"
-      loop_control:
-        loop_var: bundle
-      when: inv_cert_bundles is defined and bundle.type == "cert"
-      ansible.builtin.copy:
-        src: "../../tests/certs/{{ bundle.name }}.zip"
-        dest: "/tmp/{{ bundle.name }}.zip"
-        owner: "root"
-        group: "root"
-        mode: 0700
-
-    - name: "Import cryptographic content if needed (CA)"
-      loop: "{{ inv_cert_bundles }}"
-      loop_control:
-        loop_var: bundle
-      when: inv_cert_bundles is defined and bundle.type == "CA"
-      ansible.builtin.copy:
-        src: "../../tests/certs/{{ bundle.name }}"
-        dest: "/tmp/{{ bundle.name }}"
-        owner: "root"
-        group: "root"
-        mode: 0700
-
-    - name: "Include labocbz.add_certificates"
-      tags:
-        - "labocbz.add_certificates"
-      loop: "{{ inv_cert_bundles }}"
-      loop_control:
-        loop_var: bundle
-      when: inv_cert_bundles is defined
-      vars:
-        add_certificates_bundle_name: "{{ bundle.name }}"
-        add_certificates_bundle_type: "{{ bundle.type }}"
-        add_certificates_bundle_src: "{{ bundle.src }}"
-        add_certificates_bundle_dest: "{{ bundle.dest }}"
-        #add_certificates_bundle_src_user: "{{ bundle.src_user }}"
-        #add_certificates_bundle_src_password: "{{ bundle.src_password }}"
-        #add_certificates_bundle_dest_user: "{{ bundle.dest_user }}"
-        #add_certificates_bundle_dest_group: "{{ bundle.dest_group }}"
-        #add_certificates_bundle_dest_mode: "{{ bundle.dest_mode }}"
-      ansible.builtin.include_role:
-        name: "labocbz.add_certificates"
-
-    - name: "Include labocbz.install_redis"
-      tags:
-        - "labocbz.install_redis"
-      loop: "{{ inv_redis_ports }}"
-      loop_control:
-        loop_var: port
-      vars:
-        redis_bind: "{{ inv_redis_bind }}"
-        redis_port: "{{ port }}"
-        redis_proteced_mode: "{{ inv_redis_proteced_mode }}"
-        redis_loglevel: "{{ inv_redis_loglevel }}"
-        redis_requirepass: "{{ inv_redis_requirepass }}"
-        redis_cluster: "{{ inv_redis_cluster }}"
-        redis_path: "{{ inv_redis_path }}"
-        redis_conf: "{{ inv_redis_conf }}"
-        redis_ssl: "{{ inv_redis_ssl }}"
-        redis_ssl_domain: "{{ inv_redis_ssl_domain }}"
-        redis_ssl_path: "{{ inv_redis_ssl_path }}"
-        redis_ssl_key: "{{ inv_redis_ssl_key }}"
-        redis_ssl_cert: "{{ inv_redis_ssl_cert }}"
-        redis_ssl_ca: "{{ inv_redis_ssl_ca }}"
-        redis_ssl_auth_client: "{{ inv_redis_ssl_auth_client }}"
-      ansible.builtin.include_role:
-        name: "labocbz.install_redis"
-
     - name: "Include labocbz.install_php"
       tags:
         - "labocbz.install_php"
       vars:
-        install_php_version: "{{ inv_install_php_version }}"
-        install_php_version_is_default: "{{ inv_install_php_version_is_default }}"
-        install_php_extensions: "{{ inv_install_php_extensions }}"
-        install_php_install_fpm: "{{ inv_install_php_install_fpm }}"
-        install_php_import_cli_conf: "{{ inv_install_php_import_cli_conf }}"
-        install_php_import_apache_conf: "{{ inv_install_php_import_apache_conf }}"
-        install_php_import_cgi_conf: "{{ inv_install_php_import_cgi_conf }}"
-        install_php_import_fpm_conf: "{{ inv_install_php_import_fpm_conf }}"
-        install_php_max_input_time: "{{ inv_install_php_max_input_time }}"
-        install_php_output_buffering: "{{ inv_install_php_output_buffering }}"
-        install_php_cgi_fix_pathinfo: "{{ inv_install_php_cgi_fix_pathinfo }}"
-        install_php_expose_php: "{{ inv_install_php_expose_php }}"
-        install_php_max_execution_time: "{{ inv_install_php_max_execution_time }}"
-        install_php_memory_limit: "{{ inv_install_php_memory_limit }}"
-        install_php_post_max_size: "{{ inv_install_php_post_max_size }}"
-        install_php_file_uploads: "{{ inv_install_php_file_uploads }}"
-        install_php_upload_max_filesize: "{{ inv_install_php_upload_max_filesize }}"
-        install_php_max_file_uploads: "{{ inv_install_php_max_file_uploads }}"
-        install_php_allow_url_fopen: "{{ inv_install_php_allow_url_fopen }}"
-        install_php_allow_url_include: "{{ inv_install_php_allow_url_include }}"
-        install_php_session_save_handler: "{{ inv_install_php_session_save_handler }}"
-        install_php_session_save_path: "{{ inv_install_php_session_save_path }}"
-        install_php_session_auto_start: "{{ inv_install_php_session_auto_start }}"
-        install_php_session_use_strict_mode: "{{ inv_install_php_session_use_strict_mode }}"
-        install_php_disable_functions: "{{ inv_install_php_disable_functions }}"
-        install_php_log_level: "{{ inv_install_php_log_level }}"
+        install_php__version: "{{ inv_install_php__version }}"
+        install_php__version_is_default: "{{ inv_install_php__version_is_default }}"
+        install_php__extensions: "{{ inv_install_php__extensions }}"
+        install_php__install_fpm: "{{ inv_install_php__install_fpm }}"
+        install_php__import_cli_conf: "{{ inv_install_php__import_cli_conf }}"
+        install_php__import_apache_conf: "{{ inv_install_php__import_apache_conf }}"
+        install_php__import_cgi_conf: "{{ inv_install_php__import_cgi_conf }}"
+        install_php__import_fpm_conf: "{{ inv_install_php__import_fpm_conf }}"
+        install_php__max_input_time: "{{ inv_install_php__max_input_time }}"
+        install_php__output_buffering: "{{ inv_install_php__output_buffering }}"
+        install_php__cgi_fix_pathinfo: "{{ inv_install_php__cgi_fix_pathinfo }}"
+        install_php__expose_php: "{{ inv_install_php__expose_php }}"
+        install_php__max_execution_time: "{{ inv_install_php__max_execution_time }}"
+        install_php__memory_limit: "{{ inv_install_php__memory_limit }}"
+        install_php__post_max_size: "{{ inv_install_php__post_max_size }}"
+        install_php__file_uploads: "{{ inv_install_php__file_uploads }}"
+        install_php__upload_max_filesize: "{{ inv_install_php__upload_max_filesize }}"
+        install_php__max_file_uploads: "{{ inv_install_php__max_file_uploads }}"
+        install_php__allow_url_fopen: "{{ inv_install_php__allow_url_fopen }}"
+        install_php__allow_url_include: "{{ inv_install_php__allow_url_include }}"
+        install_php__session_save_handler: "{{ inv_install_php__session_save_handler }}"
+        install_php__session_save_path: "{{ inv_install_php__session_save_path }}"
+        install_php__session_auto_start: "{{ inv_install_php__session_auto_start }}"
+        install_php__session_use_strict_mode: "{{ inv_install_php__session_use_strict_mode }}"
+        install_php__disable_functions: "{{ inv_install_php__disable_functions }}"
+        install_php__log_level: "{{ inv_install_php__log_level }}"
       ansible.builtin.include_role:
         name: "labocbz.install_php"

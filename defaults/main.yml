@@ -1,9 +1,9 @@
 ---
-add_php_fpm_confs_php_version: "8.2"
-add_php_fpm_confs_php_pools_path: "/etc/php/{{ add_php_fpm_confs_php_version }}/fpm/pool.d"
-add_php_fpm_confs_php_pools_log_path: "/var/log/php"
+add_php_fpm_confs__php_version: "8.2"
+add_php_fpm_confs__php_pools_path: "/etc/php/{{ add_php_fpm_confs__php_version }}/fpm/pool.d"
+add_php_fpm_confs__php_pools_log_path: "/var/log/php"
 
-add_php_fpm_confs_fpm_pools:
+add_php_fpm_confs__fpm_pools:
   - name: "www"
     user: "www-data"
     group: "www-data"
