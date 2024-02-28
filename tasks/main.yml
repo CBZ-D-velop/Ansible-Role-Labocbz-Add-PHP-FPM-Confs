@@ -3,23 +3,24 @@
   notify: "Restart php-fpm"
   block:
     - name: "Import all pools"
-      loop: "{{ add_php_fpm_confs_fpm_pools }}"
+      loop: "{{ add_php_fpm_confs__fpm_pools }}"
       loop_control:
         loop_var: pool
       ansible.builtin.template:
         src: "templates/pool.conf.j2"
-        dest: "{{ add_php_fpm_confs_php_pools_path }}/{{ pool.name }}.conf"
+        dest: "{{ add_php_fpm_confs__php_pools_path }}/{{ pool.name }}.conf"
         mode: "0700"
         owner: "root"
         group: "root"
         lstrip_blocks: yes
 
     - name: "Create logs paths"
-      loop: "{{ add_php_fpm_confs_fpm_pools }}"
+      loop: "{{ add_php_fpm_confs__fpm_pools }}"
+      changed_when: false
       loop_control:
         loop_var: pool
       ansible.builtin.file:
-        path: "{{ add_php_fpm_confs_php_pools_log_path }}/{{ pool.name }}"
+        path: "{{ add_php_fpm_confs__php_pools_log_path }}/{{ pool.name }}"
         mode: "0755"
         owner: "{{ pool.user }}"
         group: "{{ pool.group }}"

@@ -3,5 +3,5 @@
   register: fpm_service_status
   changed_when: not fpm_service_status.status.ActiveState != "stopped"
   ansible.builtin.service:
-    name: "php{{ add_php_fpm_confs_php_version }}-fpm"
+    name: "php{{ add_php_fpm_confs__php_version }}-fpm"
     state: "restarted"

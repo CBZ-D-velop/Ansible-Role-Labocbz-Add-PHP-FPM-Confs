@@ -108,11 +108,11 @@ Some vars a required to run this role:
 
 ```YAML
 ---
-add_php_fpm_confs_php_version: "8.2"
-add_php_fpm_confs_php_pools_path: "/etc/php/{{ add_php_fpm_confs_php_version }}/fpm/pool.d"
-add_php_fpm_confs_php_pools_log_path: "/var/log/php"
+add_php_fpm_confs__php_version: "8.2"
+add_php_fpm_confs__php_pools_path: "/etc/php/{{ add_php_fpm_confs__php_version }}/fpm/pool.d"
+add_php_fpm_confs__php_pools_log_path: "/var/log/php"
 
-add_php_fpm_confs_fpm_pools:
+add_php_fpm_confs__fpm_pools:
   - name: "www"
     user: "www-data"
     group: "www-data"
@@ -135,11 +135,11 @@ In order to surchage vars, you have multiples possibilities but for mains cases 
 ```YAML
 # From inventory
 ---
-inv_add_php_fpm_confs_php_version: "8.2"
-inv_add_php_fpm_confs_php_pools_path: "/etc/php/{{ inv_add_php_fpm_confs_php_version }}/fpm/pool.d"
-inv_add_php_fpm_confs_php_pools_log_path: "/var/log/php"
+inv_add_php_fpm_confs__php_version: "8.2"
+inv_add_php_fpm_confs__php_pools_path: "/etc/php/{{ inv_add_php_fpm_confs__php_version }}/fpm/pool.d"
+inv_add_php_fpm_confs__php_pools_log_path: "/var/log/php"
 
-inv_add_php_fpm_confs_fpm_pools:
+inv_add_php_fpm_confs__fpm_pools:
   - name: "www"
     user: "www-data"
     group: "www-data"
@@ -199,10 +199,10 @@ To run this role, you can copy the molecule/default/converge.yml playbook and ad
     tags:
     - "labocbz.add_php_fpm_confs"
     vars:
-    add_php_fpm_confs_php_version: "{{ inv_add_php_fpm_confs_php_version }}"
-    add_php_fpm_confs_php_pools_path: "{{ inv_add_php_fpm_confs_php_pools_path }}"
-    add_php_fpm_confs_fpm_pools: "{{ inv_add_php_fpm_confs_fpm_pools }}"
-    add_php_fpm_confs_php_pools_log_path: "{{ inv_add_php_fpm_confs_php_pools_log_path }}"
+    add_php_fpm_confs__php_version: "{{ inv_add_php_fpm_confs__php_version }}"
+    add_php_fpm_confs__php_pools_path: "{{ inv_add_php_fpm_confs__php_pools_path }}"
+    add_php_fpm_confs__fpm_pools: "{{ inv_add_php_fpm_confs__fpm_pools }}"
+    add_php_fpm_confs__php_pools_log_path: "{{ inv_add_php_fpm_confs__php_pools_log_path }}"
     ansible.builtin.include_role:
     name: "labocbz.add_php_fpm_confs"
 ```
@@ -228,6 +228,11 @@ Here you can put your change to keep a trace of your work and decisions.
 ### 2024-01-24: Custom logs
 
 * Role deploy pool with defined logs error, slow and access files
+
+### 2024-02-24: Fix and CI
+
+* Added support for new CI base
+* Edit all vars with __
 
 ## Authors
 
