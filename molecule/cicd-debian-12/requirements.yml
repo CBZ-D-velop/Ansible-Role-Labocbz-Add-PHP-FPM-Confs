@@ -1,0 +1,6 @@
+---
+- name: "labocbz.prepare_host"
+  src: "https://github.com/CBZ-D-velop/Ansible-Role-Labocbz-Prepare-Host.git"
+
+- name: "labocbz.install_php"
+  src: "https://github.com/CBZ-D-velop/Ansible-Role-Labocbz-Install-PHP.git"

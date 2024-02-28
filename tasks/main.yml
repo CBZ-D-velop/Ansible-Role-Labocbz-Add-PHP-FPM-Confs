@@ -16,6 +16,7 @@
 
     - name: "Create logs paths"
       loop: "{{ add_php_fpm_confs__fpm_pools }}"
+      changed_when: false
       loop_control:
         loop_var: pool
       ansible.builtin.file:
